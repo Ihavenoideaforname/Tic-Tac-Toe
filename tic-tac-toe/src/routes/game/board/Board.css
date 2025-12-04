@@ -1,0 +1,121 @@
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #dbeafe, #e9d5ff);
+    padding: 20px;
+}
+
+.game-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 40px;
+}
+
+.game-title {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #1f2937;
+    margin-top: 0;
+}
+
+.status-container {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.status {
+    font-size: 24px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.status-playing {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.status-winner {
+    background-color: #22c55e;
+    color: #ffffff;
+    animation: bounce 0.5s infinite;
+}
+
+.status-draw {
+    background-color: #eab308;
+    color: #ffffff;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 4px solid #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.reset-button {
+    margin-top: 24px;
+    width: 100%;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+}
+
+.reset-button:hover {
+    background-color: #1d4ed8;
+}
+
+
+@media (max-width: 640px) {
+    .square {
+        width: 80px;
+        height: 80px;
+        font-size: 36px;
+    }
+  
+    .game-card {
+        padding: 20px;
+    }
+  
+    .game-title {
+        font-size: 28px;
+    }
+  
+    .status {
+        font-size: 20px;
+    }
+}
