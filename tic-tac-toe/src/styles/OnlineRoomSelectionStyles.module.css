@@ -1,0 +1,36 @@
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.input {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.create-room-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px; 
+    font-size: 24px; 
+    margin-bottom: 30px;
+}
+
+.join-room-button {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.or-text {
+    margin: 30px 0;
+    color: #6b7280;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}

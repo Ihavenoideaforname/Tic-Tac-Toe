@@ -1,0 +1,38 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.75);
+    display: grid;
+    place-items: center;
+    z-index: 2;
+}
+
+.modal {
+    background-color: #1f2937;
+    padding: 32px;
+    border-radius: 12px;
+    min-width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.title {
+    margin-bottom: 24px;
+    font-size: 2rem;
+    font-weight: 1000;
+    color: #e5e7eb;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.rematch {
+    background: linear-gradient(135deg, #0bdbd0, #185bb9);
+}
+
+.exit {
+    background: linear-gradient(135deg, #8c939f, #47494f);
+}

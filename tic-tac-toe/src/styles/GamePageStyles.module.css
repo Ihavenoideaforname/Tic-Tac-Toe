@@ -1,0 +1,32 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 4px solid #1f2937;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.players {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  gap: 10px;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.undo {
+  background: linear-gradient(135deg, #4b5563, #1f2937);
+}
+
+.redo {
+  background: linear-gradient(135deg, #8f9398, #3c3e3f);
+}
