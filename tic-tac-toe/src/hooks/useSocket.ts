@@ -46,6 +46,7 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
   
   const gameActiveRef = useRef(false);
   const isWaitingRef = useRef(false);
+  const socketRef = useRef<SocketType | null>(null);
 
   useEffect(() => {
     gameActiveRef.current = gameActive;
@@ -56,8 +57,20 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
   }, [isWaiting]);
 
   useEffect(() => {
+    if (!roomCode) {
+      console.log('No room code provided, skipping socket connection');
+      return;
+    }
+
+    if (socketRef.current?.connected) {
+      console.log('Socket already connected, reusing existing connection');
+      return;
+    }
+
+    console.log('Connecting to socket for room:', roomCode);
+
     const newSocket = io(SOCKET_URL, {
-      transports: ['websocket', 'polling']
+      transports: ['websocket', 'polling'],
     });
 
     newSocket.on('connect', () => {
@@ -139,11 +152,17 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
     });
 
     setSocket(newSocket);
+    socketRef.current = newSocket;
 
     return () => {
-      newSocket.close();
+      console.log('Cleaning up socket connection');
+      if(socketRef.current) {
+        socketRef.current.removeAllListeners();
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
     };
-  }, []);
+  }, [roomCode]);
 
   const createRoom = useCallback((code: string, mode: GameMode) => {
     if (socket) {

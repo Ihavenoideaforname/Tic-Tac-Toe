@@ -11,25 +11,9 @@ import healthRoutes from './routes/healthRoutes';
 const app = express();
 const httpServer = createServer(app);
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.HOST_URL,
-  'http://localhost:3000',
-  'http://localhost:3001'
-].filter(Boolean);
-
 const io = new Server(httpServer, {
-  cors: {
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } 
-      else {
-        callback(new Error('Origin not allowed'));
-      }
-    },
-    methods: ['GET', 'POST'],
-  },
+  transports: ['websocket', 'polling'],
+  allowEIO3: true
 });
 
 app.use(cors());
@@ -40,7 +24,10 @@ app.use('/', roomRoutes);
 
 app.use(express.static(path.join(__dirname, '../../tic-tac-toe/build')));
 
-app.get(/.*/, (req, res) => {
+app.get('*', (req, res) => {
+  if(req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
+    return res.status(404).json({ error: 'Not found' });
+  }
   res.sendFile(path.join(__dirname, '../../tic-tac-toe/build/index.html'));
 });
 
