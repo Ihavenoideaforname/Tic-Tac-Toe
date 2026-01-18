@@ -1,0 +1,36 @@
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.status-container {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.status {
+    font-size: 24px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+}
+
+.status-playing {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.status-winner {
+    background-color: #22c55e;
+    color: #ffffff;
+    animation: bounce 0.5s infinite;
+}
+
+.status-draw {
+    background-color: #eab308;
+    color: #ffffff;
+}

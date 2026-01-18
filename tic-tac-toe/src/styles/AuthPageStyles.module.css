@@ -1,0 +1,11 @@
+.or-text {
+  margin: 30px 0;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.guest-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}

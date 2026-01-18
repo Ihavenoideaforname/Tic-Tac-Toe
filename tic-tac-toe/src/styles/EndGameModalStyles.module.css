@@ -1,0 +1,68 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.75);
+    display: grid;
+    place-items: center;
+    z-index: 2;
+}
+
+.modal {
+    background-color: #1f2937;
+    padding: 32px;
+    border-radius: 12px;
+    min-width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.title {
+    margin-bottom: 24px;
+    font-size: 2rem;
+    font-weight: 1000;
+    color: #e5e7eb;
+}
+
+.message {
+    margin-bottom: 24px;
+    font-size: 1.1rem;
+    color: #d1d5db;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.rematch {
+    background: linear-gradient(135deg, #0bdbd0, #185bb9);
+}
+
+.exit {
+    background: linear-gradient(135deg, #8c939f, #47494f);
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: #0bdbd0;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+.code {
+    color: #0bdbd0; 
+    font-size: 1.5rem;
+    font-weight: bold; 
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
