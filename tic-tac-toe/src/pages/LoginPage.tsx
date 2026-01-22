@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import shared from '../styles/SharedStyles.module.css';
-import authStyles from '../styles/AuthPageStyles.module.css';
 import loginStyles from '../styles/LoginPageStyles.module.css';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -44,53 +45,26 @@ export default function LoginPage() {
   return (
     <div className={shared['page-container']}>
       <div className={shared['page-card']}>
+        <button className={shared['back-button']} onClick={() => navigate('/')}>
+          ← Back
+        </button>
         <h1 className={shared['page-title']}>Login</h1>
 
         <form onSubmit={handleLogin} className={loginStyles['form-container']}>
-          <input
-            className={loginStyles['input-field']}
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            className={loginStyles['input-field']}
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <FormInput type="email" placeholder="Email" value={email} onChange={setEmail} required />
+          <FormInput type="password" placeholder="Password" value={password} onChange={setPassword} required />
 
           {error && <p className={loginStyles['error-message']}>{error}</p>}
 
-          <div className={loginStyles['button-group']}>
-            <button
-              type="submit"
-              disabled={loading}
-              className={loginStyles['login-button']}
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </div>
-        </form>
+          <FormButton text="🔑 Login" loadingText="Logging in..." isLoading={loading} type="submit" />
 
-        <div className={authStyles['or-text']}>OR</div>
+        </form>
 
         <button
           className={loginStyles['login-button']}
           onClick={() => navigate('/register')}
         >
           Create Account
-        </button>
-
-        <button
-          className={loginStyles['login-button']}
-          onClick={() => navigate('/')}
-        >
-          Back
         </button>
       </div>
     </div>

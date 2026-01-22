@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import shared from '../styles/SharedStyles.module.css';
-import authStyles from '../styles/AuthPageStyles.module.css';
 import loginStyles from '../styles/LoginPageStyles.module.css';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -55,69 +56,27 @@ export default function RegisterPage() {
   return (
     <div className={shared['page-container']}>
       <div className={shared['page-card']}>
+        <button className={shared['back-button']} onClick={() => navigate('/')}>
+          ← Back
+        </button>
         <h1 className={shared['page-title']}>Register</h1>
 
         <form onSubmit={handleRegister} className={loginStyles['form-container']}>
-          <input
-            className={loginStyles['input-field']}
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            className={loginStyles['input-field']}
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            className={loginStyles['input-field']}
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            className={loginStyles['input-field']}
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <FormInput type="text" placeholder="Username" value={username} onChange={setUsername} required />
+          <FormInput type="email" placeholder="Email" value={email} onChange={setEmail} required />
+          <FormInput type="password" placeholder="Password" value={password} onChange={setPassword} required />
+          <FormInput type="password" placeholder="Confirm Password" value={confirmPassword} onChange={setConfirmPassword} required />
 
           {error && <p className={loginStyles['error-message']}>{error}</p>}
 
-          <div className={loginStyles['button-group']}>
-            <button
-              type="submit"
-              disabled={loading}
-              className={loginStyles['login-button']}
-            >
-              {loading ? 'Creating Account...' : 'Register'}
-            </button>
-          </div>
+          <FormButton text="🪪 Register" loadingText="Creating Account..." isLoading={loading} type="submit" />
         </form>
-
-        <div className={authStyles['or-text']}>OR</div>
 
         <button
           className={loginStyles['login-button']}
           onClick={() => navigate('/login')}
         >
           Already have an account?
-        </button>
-
-        <button
-          className={loginStyles['login-button']}
-          onClick={() => navigate('/')}
-        >
-          Back
         </button>
       </div>
     </div>

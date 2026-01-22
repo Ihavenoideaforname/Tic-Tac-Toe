@@ -10,7 +10,7 @@ export default function AuthPage() {
     <div className={shared['page-container']}>
         <div className={shared['page-card']}>
             <h1 className={shared['page-title']}>Tic-Tac-Toe</h1>
-            <button className={loginStyles['login-button']} onClick={() => navigate('/login')}>🔒 Login</button>
+            <button className={loginStyles['login-button']} onClick={() => navigate('/login')}>🔓 Login</button>
             <button className={loginStyles['login-button']} onClick={() => navigate('/register')}>📝 Register</button>
             <div className={styles['or-text']}>OR</div>
             <button className={`${shared['primary-button']} ${styles['guest-button']}`} onClick={() => navigate('/type')}>👤 Continue as Guest</button>

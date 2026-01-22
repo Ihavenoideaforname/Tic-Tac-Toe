@@ -12,7 +12,7 @@
 .login-button {
   width: 100%;
   padding: 16px;
-  background-color: #1e3a8a;
+  background: linear-gradient(135deg, #1a37b6 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 12px;
