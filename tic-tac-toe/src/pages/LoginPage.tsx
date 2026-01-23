@@ -33,7 +33,7 @@ export default function LoginPage() {
 
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      navigate('/type');
+      navigate('/main-menu');
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error(err);

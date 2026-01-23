@@ -8,7 +8,7 @@ export default function GameTypeSelection() {
   return (
     <div className={shared["page-container"]}>
       <div className={shared["page-card"]}>
-        <button className={shared["back-button"]} onClick={() => navigate("/")}>← Back</button>
+        <button className={shared["back-button"]} onClick={() => navigate("/main-menu")}>← Back</button>
         <h1 className={shared["page-title"]}>Select Game Type</h1>
         <div className={shared["button-container"]}>
           <button className={`${shared["primary-button"]} ${styles["game-type-local"]}`} onClick={() => navigate('/mode/local')}>

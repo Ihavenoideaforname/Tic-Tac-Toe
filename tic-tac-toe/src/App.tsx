@@ -9,6 +9,7 @@ import OnlineRoomSelectionPage from './pages/OnlineRoomSelectionPage';
 import GameModeSelectionPage from './pages/GameModeSelectionPage';
 import GamePage from './pages/GamePage';
 import ErrorPage from './pages/ErrorPage';
+import MainMenuPage from './pages/MainMenuPage';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/type" element={<GameTypeSelectionPage />} />
         <Route path="/room" element={<OnlineRoomSelectionPage />} />
+        <Route path="/main-menu" element={<MainMenuPage />} />
         <Route path="/mode/:type" element={<GameModeSelectionPage />} />
         <Route path="/mode/:type/:roomCode" element={<GameModeSelectionPage />} />
         <Route path="/game/:type/:mode" element={<GamePage />} />
