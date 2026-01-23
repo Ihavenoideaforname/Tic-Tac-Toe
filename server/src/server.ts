@@ -3,10 +3,13 @@ import { createServer } from 'http';
 import path from "path";
 import cors from 'cors';
 import { Server } from 'socket.io';
+import dotenv from 'dotenv';
+import userRoutes from "./routes/userRoutes";
 
 import { setupSocket } from './socket/socketHandler';
 import roomRoutes from './routes/roomRoutes';
 import healthRoutes from './routes/healthRoutes';
+import { connectToMongo } from './utils/mongo';
 
 const app = express();
 const httpServer = createServer(app);
@@ -21,8 +24,11 @@ app.use(express.json());
 
 app.use('/', healthRoutes);
 app.use('/', roomRoutes);
+app.use('/', userRoutes);
 
 app.use(express.static(path.join(__dirname, '../../tic-tac-toe/build')));
+
+app.use('/uploads', express.static('uploads'));
 
 app.get('*', (req, res) => {
   if(req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
@@ -35,6 +41,16 @@ setupSocket(io);
 
 const PORT = process.env.PORT || 3001;
 
-httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+dotenv.config();
+
+(async () => {
+  try {
+    await connectToMongo();
+    httpServer.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to connect to MongoDB', err);
+    process.exit(1);
+  }
+})();
