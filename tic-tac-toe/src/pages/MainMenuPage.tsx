@@ -6,12 +6,17 @@ import { useNavigate } from 'react-router-dom';
 export default function MainMenuPage() {
   const navigate = useNavigate();
 
+  const isLoggedIn = !!localStorage.getItem('token');
+
   return (
+    
     <div className={shared['page-container']}>
       <div className={shared['page-card']}>
-        <button className={shared['back-button']} onClick={() => navigate('/')}>
-          ← Back
-        </button>
+        {!isLoggedIn && (
+          <button className={shared['back-button']} onClick={() => navigate('/')}>
+            ← Back
+          </button>
+        )}
 
         <h1 className={shared['page-title']}>Main Menu</h1>
 
