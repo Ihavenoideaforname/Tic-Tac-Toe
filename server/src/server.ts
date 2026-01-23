@@ -28,6 +28,8 @@ app.use('/', userRoutes);
 
 app.use(express.static(path.join(__dirname, '../../tic-tac-toe/build')));
 
+app.use('/uploads', express.static('uploads'));
+
 app.get('*', (req, res) => {
   if(req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
     return res.status(404).json({ error: 'Not found' });

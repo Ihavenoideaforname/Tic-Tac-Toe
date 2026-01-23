@@ -1,5 +1,6 @@
 import shared from '../styles/SharedStyles.module.css';
 import styles from '../styles/MainMenuPage.module.css';
+import loginStyles from '../styles/LoginPageStyles.module.css';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -25,7 +26,7 @@ export default function MainMenuPage() {
 
           <button className={shared['disabled-button']} disabled>🏆 Tablica wyników (TBD) </button>
 
-          <button className={shared['disabled-button']} disabled>👤 Profil (TBD) </button>
+          <button className={`${loginStyles['login-button']} ${styles['login-button']}`} onClick={() => navigate('/profile')}>👤 Profil </button>
         </div>
       </div>
     </div>

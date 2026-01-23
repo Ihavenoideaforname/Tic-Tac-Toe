@@ -1,6 +1,8 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+import { upload } from '../utils/upload';
+import { auth, AuthRequest } from "../utils/auth";
 
 const router = express.Router();
 
@@ -70,6 +72,29 @@ router.get("/api/users", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error fetching users", error });
   }
+});
+
+router.get('/api/users/me', auth, async (req: AuthRequest, res) => {
+  const user = await User.findById(req.user!.userId);
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json({ user });
+});
+
+router.put('/api/users/me', auth, upload.single('avatar'), async (req: AuthRequest, res) => {
+  const user = await User.findById(req.user!.userId);
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  if (req.body.username) user.username = req.body.username;
+  if (req.body.email) user.email = req.body.email;
+  if (req.file) user.avatar = `/uploads/${req.file.filename}`;
+
+  await user.save();
+  res.json({ user });
+});
+
+router.delete('/api/users/me', auth, async (req: AuthRequest, res) => {
+  await User.findByIdAndDelete(req.user!.userId);
+  res.json({ message: 'Deleted' });
 });
 
 export default router;

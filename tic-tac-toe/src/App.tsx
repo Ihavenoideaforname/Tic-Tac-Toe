@@ -10,6 +10,8 @@ import GameModeSelectionPage from './pages/GameModeSelectionPage';
 import GamePage from './pages/GamePage';
 import ErrorPage from './pages/ErrorPage';
 import MainMenuPage from './pages/MainMenuPage';
+import ProfilePage from './pages/ProfilePage';
+import EditPage from './pages/EditPage';
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="/" element={<AuthPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/profile/edit" element={<EditPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/type" element={<GameTypeSelectionPage />} />
         <Route path="/room" element={<OnlineRoomSelectionPage />} />
         <Route path="/main-menu" element={<MainMenuPage />} />
