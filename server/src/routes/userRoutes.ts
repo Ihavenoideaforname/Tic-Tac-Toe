@@ -105,4 +105,13 @@ router.delete('/api/users/me', auth, async (req: AuthRequest, res) => {
   res.json({ message: 'Deleted' });
 });
 
+router.get('/api/hall-of-fame', async (_req, res) => {
+  const users = await User.find()
+    .sort({ wins: -1, draws: -1 })
+    .limit(10)
+    .select('username avatar wins losses draws');
+
+  res.json(users);
+});
+
 export default router;
