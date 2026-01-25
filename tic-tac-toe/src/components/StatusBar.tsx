@@ -1,22 +1,23 @@
 import styles from '../styles/StatusBarStyles.module.css';
 
 interface Props {
-    winner: 'X' | 'O' | null;
+    winner: string | null;
     isDraw: boolean;
     xNext: boolean;
-    timeoutWinner?: 'X' | 'O' | null;
+    timeoutWinner?: string | null;
+    currentPlayerName?: string;
 }
 
-export default function StatusBar({winner, isDraw, xNext, timeoutWinner}: Props) {
+export default function StatusBar({winner, isDraw, xNext, timeoutWinner, currentPlayerName,}: Props) {
     let text: string;
     let statusClass = styles['status-playing'];
 
-    if(timeoutWinner) {
-        text = `Player ${timeoutWinner === 'O' ? '1' : '2'} wins by timeout!`;
+    if (timeoutWinner) {
+        text = `${timeoutWinner} wins by timeout!`;
         statusClass = styles['status-winner'];
     } 
     else if (winner) {
-        text = `Player ${winner === 'O' ? '1' : '2'} wins!`;
+        text = `${winner} wins!`;
         statusClass = styles['status-winner'];
     } 
     else if (isDraw) {
@@ -24,7 +25,7 @@ export default function StatusBar({winner, isDraw, xNext, timeoutWinner}: Props)
         statusClass = styles['status-draw'];
     } 
     else {
-        text = `Current turn: Player ${xNext ? '1' : '2'}`;
+        text = `Current turn: ${currentPlayerName ?? '—'}`;
     }
 
     return (

@@ -208,10 +208,11 @@ export default function GameBoard() {
         </div>
 
         <StatusBar
-          winner={game.winner}
+          winner={game.winner? playerNames?.[game.winner] ?? game.winner: null}
           isDraw={game.draw}
           xNext={game.xNext}
-          timeoutWinner={game.timeoutWinner}
+          timeoutWinner={game.timeoutWinner ? playerNames?.[game.timeoutWinner] ?? null : null}
+          currentPlayerName={isOnline? playerNames?.[game.xNext ? 'O' : 'X']: undefined}
         />
 
         <div className={styles['board']}>
