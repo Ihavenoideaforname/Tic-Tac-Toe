@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function MainMenuPage() {
   const navigate = useNavigate();
-
+  const handleLogout = () => {localStorage.removeItem('token'); localStorage.removeItem('user'); navigate('/'); };
   const isLoggedIn = !!localStorage.getItem('token');
 
   return (
@@ -27,6 +27,8 @@ export default function MainMenuPage() {
           <button className={shared['secondary-button']} onClick={() => navigate('/hall-of-fame')} >🏆 Tablica wyników </button>
 
           <button className={`${loginStyles['login-button']} ${styles['login-button']}`} onClick={() => navigate('/profile')}>👤 Profil </button>
+
+          <button className={shared['logout-button']} onClick={handleLogout} > 🚪 Wyloguj się </button>
         </div>
       </div>
     </div>
