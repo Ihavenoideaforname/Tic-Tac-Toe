@@ -41,7 +41,7 @@ export const setupSocket = (io: Server) => {
         symbol: 'O',
         name: username || 'Player 1',
         avatar: avatar || '/default-avatar.jpg',
-        userId: userId || null,
+        userId: userId ?? null,
       };
 
       rooms.set(code, room);
@@ -80,7 +80,7 @@ export const setupSocket = (io: Server) => {
         symbol: 'X',
         name: username || 'Player 2',
         avatar: avatar || '/default-avatar.jpg',
-        userId: userId || null,
+        userId: userId ?? null,
       };
 
       socket.join(code);

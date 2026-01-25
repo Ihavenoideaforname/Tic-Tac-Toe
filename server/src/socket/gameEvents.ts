@@ -1,10 +1,11 @@
 import { Server, Socket } from 'socket.io';
+import User from '../models/User';
 import { rooms } from '../services/roomService';
 import { checkWinner } from '../services/gameService';
 import { startTimer } from '../utils/timerManager';
 
 export const registerGameEvents = (io: Server, socket: Socket) => {
-  socket.on('make-move', ({ code, index }) => {
+  socket.on('make-move', async ({ code, index }) => {
     const room = rooms.get(code);
     if (!room) return;
 
@@ -23,12 +24,33 @@ export const registerGameEvents = (io: Server, socket: Socket) => {
 
     const winnerLine = checkWinner(gameState.squares);
     if (winnerLine) {
-      gameState.winner = gameState.squares[winnerLine[0]];
-      gameState.winnerLine = winnerLine;
-    } 
-    else if (gameState.squares.every(Boolean)) {
-      gameState.draw = true;
+  gameState.winner = gameState.squares[winnerLine[0]];
+  gameState.winnerLine = winnerLine;
+
+  const winnerSymbol = gameState.winner;
+
+  for (const playerId in room.players) {
+    const p = room.players[playerId];
+    if (!p.userId) continue;
+
+    if (p.symbol === winnerSymbol) {
+      await User.findByIdAndUpdate(p.userId, { $inc: { wins: 1 } });
+    } else {
+      await User.findByIdAndUpdate(p.userId, { $inc: { losses: 1 } });
     }
+  }
+}
+else if (gameState.squares.every(Boolean)) {
+  gameState.draw = true;
+
+  for (const playerId in room.players) {
+    const p = room.players[playerId];
+    if (!p.userId) continue;
+
+    await User.findByIdAndUpdate(p.userId, { $inc: { draws: 1 } });
+  }
+}
+
 
     io.to(code).emit('game-update', { gameState });
   });
