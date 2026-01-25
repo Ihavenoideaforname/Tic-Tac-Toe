@@ -24,7 +24,7 @@ export default function MainMenuPage() {
         <div className={shared['button-container']}>
           <button className={`${shared['primary-button']} ${styles['play-button']}`} onClick={() => navigate('/type')}>🎮 Graj</button>
 
-          <button className={shared['disabled-button']} disabled>🏆 Tablica wyników (TBD) </button>
+          <button className={shared['secondary-button']} onClick={() => navigate('/hall-of-fame')} >🏆 Tablica wyników </button>
 
           <button className={`${loginStyles['login-button']} ${styles['login-button']}`} onClick={() => navigate('/profile')}>👤 Profil </button>
         </div>
