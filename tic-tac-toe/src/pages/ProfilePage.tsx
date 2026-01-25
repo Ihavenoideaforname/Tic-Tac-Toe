@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import shared from '../styles/SharedStyles.module.css';
 import loginStyles from '../styles/LoginPageStyles.module.css';
 
+
 interface User {
   id: string;
   username: string;
@@ -15,10 +16,30 @@ export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem('user');
-    if (!stored) navigate('/login');
-    else setUser(JSON.parse(stored));
-  }, []);
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    navigate('/login');
+    return;
+  }
+
+    const fetchMe = async () => {
+      const res = await fetch('/api/users/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) {
+        navigate('/login');
+      return;
+      }
+
+      const me = await res.json();
+      setUser(me);
+      localStorage.setItem('user', JSON.stringify(me));
+    };
+
+    fetchMe();
+  }, [navigate]);
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete your account?')) return;
@@ -46,8 +67,8 @@ export default function ProfilePage() {
         <h1 className={shared['page-title']}>Profile</h1>
 
         <img
-          src={user.avatar || '/default-avatar.png'}
-          alt={user.username ? `${user.username}'s avatar` : 'Default avatar'}
+          src={user.avatar || '/default-avatar.jpg'}
+          alt="avatar"
           style={{ width: 120, borderRadius: '50%', marginBottom: 20 }}
         />
 

@@ -19,6 +19,11 @@ export default function GameBoard() {
   }>();
 
   const [showEndModal, setShowEndModal] = useState(false);
+  const storedUser = localStorage.getItem('user');
+  const localAvatar = storedUser
+  ? JSON.parse(storedUser).avatar
+  : undefined;
+
   const isOnline = type === 'online';
   
   const gameMode: 'regular' | 'timed' = mode === 'timed' ? 'timed' : 'regular';
@@ -30,6 +35,8 @@ export default function GameBoard() {
     isWaiting,
     error,
     rematchRequested,
+    playerNames,
+    playerAvatars,
     createRoom,
     joinRoom,
     makeMove: socketMove,
@@ -128,6 +135,20 @@ export default function GameBoard() {
     }
   };
 
+  const handleExitGame = () => {
+  const isLoggedIn = Boolean(localStorage.getItem('token'));
+
+  if (isOnline) {
+    leaveRoom();
+  }
+  if (isLoggedIn) {
+    navigate('/main-menu');
+  } else {
+    navigate('/');
+  }
+};
+
+
   const game = isOnline && onlineState ? {
     squares: onlineState.squares,
     xNext: onlineState.xNext,
@@ -171,15 +192,15 @@ export default function GameBoard() {
         
         <div className={styles['players']}>
           <PlayerCard
-            name="Player 1"
-            avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=1"
+            name={playerNames?.O || 'Player 1'}
+            avatar={isOnline? playerAvatars?.O || '/default-avatar.jpg': localAvatar}
             symbol="O"
             isActive={game.xNext}
             timeLeft={gameMode === 'timed' ? game.p1Time : undefined}
           />
           <PlayerCard
-            name="Player 2"
-            avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=2"
+            name={playerNames?.X || 'Player 2'}
+            avatar={isOnline? playerAvatars?.X || '/default-avatar.jpg': '/default-avatar.jpg'}
             symbol="X"
             isActive={!game.xNext}
             timeLeft={gameMode === 'timed' ? game.p2Time : undefined}
@@ -239,10 +260,7 @@ export default function GameBoard() {
               : `${game.winner === 'O' ? 'Player 1' : 'Player 2'} wins!`
           }
           onRematch={handleRematch}
-          onExit={() => {
-            if (isOnline) leaveRoom();
-            navigate('/');
-          }}
+          onExit={handleExitGame}
         />
 
         <ConnectionModal

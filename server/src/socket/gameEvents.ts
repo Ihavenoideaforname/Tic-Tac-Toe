@@ -24,6 +24,7 @@ export const registerGameEvents = (io: Server, socket: Socket) => {
     const winnerLine = checkWinner(gameState.squares);
     if (winnerLine) {
       gameState.winner = gameState.squares[winnerLine[0]];
+      gameState.winnerLine = winnerLine;
     } 
     else if (gameState.squares.every(Boolean)) {
       gameState.draw = true;
@@ -48,6 +49,7 @@ export const registerGameEvents = (io: Server, socket: Socket) => {
         winner: null,
         draw: false,
         timeoutWinner: null,
+        winnerLine: null,
       };
 
       room.rematchRequests.clear();

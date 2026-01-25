@@ -17,6 +17,7 @@ export interface Room {
     winner: Player;
     draw: boolean;
     timeoutWinner: Player;
+    winnerLine: number[] | null;
   };
   mode: 'regular' | 'timed';
   rematchRequests: Set<string>;
