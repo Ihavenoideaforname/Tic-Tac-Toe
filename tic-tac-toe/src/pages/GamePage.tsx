@@ -294,7 +294,7 @@ export default function GameBoard() {
           message={error || undefined}
           onReject={() => {
             if (isOnline) leaveRoom();
-            navigate('/');
+            navigate('/main-menu');
           }}
         />
       </div>
