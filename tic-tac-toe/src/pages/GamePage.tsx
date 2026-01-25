@@ -182,6 +182,17 @@ export default function GameBoard() {
     }
   }, [error]);
 
+  const endGameTitle = (() => {
+  if (game.draw) return "It's a draw!";
+  if (game.timeoutWinner) {
+    return `${playerNames?.[game.timeoutWinner]} wins by timeout!`;
+  }
+  if (game.winner) {
+    return `${playerNames?.[game.winner]} wins!`;
+  }
+  return '';
+  })();
+
   return (
     <div className={shared['page-container']}>
       <div className={shared['page-card']}>
@@ -255,11 +266,7 @@ export default function GameBoard() {
 
         <EndGameModal
           open={showEndModal && !isWaiting && !rematchRequested}
-          title={
-            game.draw
-              ? "It's a draw!"
-              : `${game.winner === 'O' ? 'Player 1' : 'Player 2'} wins!`
-          }
+          title={endGameTitle}
           onRematch={handleRematch}
           onExit={handleExitGame}
         />
