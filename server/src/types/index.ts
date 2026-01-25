@@ -7,6 +7,8 @@ export interface Room {
       playerId: string;
       symbol: Player;
       name: string;
+      userId?: string;
+      avatar?: string;
     };
   };
   gameState: {

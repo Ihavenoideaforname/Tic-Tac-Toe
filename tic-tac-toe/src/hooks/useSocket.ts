@@ -50,7 +50,10 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
   const [playerAvatars, setPlayerAvatars] = useState<{O?: string; X?: string; }>({});
 
   const storedUser = localStorage.getItem('user');
-  const username = storedUser ? JSON.parse(storedUser).username : 'Guest';
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+  const username: string = parsedUser?.username ?? 'Guest';
+  const avatar: string = parsedUser?.avatar ?? '/default-avatar.jpg';
+  const userId: string | null = parsedUser?.id ?? null;
   const gameActiveRef = useRef(false);
   const isWaitingRef = useRef(false);
   const socketRef = useRef<SocketType | null>(null);
@@ -183,7 +186,7 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
 
   const createRoom = useCallback((code: string, mode: GameMode) => {
     if (socket) {
-      socket.emit('create-room', { code, mode, username });
+      socket.emit('create-room', { code, mode, username, userId, avatar });
       setIsWaiting(true);
       setError(null);
     }
@@ -191,7 +194,7 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
 
   const joinRoom = useCallback((code: string, mode: GameMode) => {
     if (socket) {
-      socket.emit('join-room', { code, mode, username });
+      socket.emit('join-room', { code, mode, username, avatar, userId, });
       setError(null);
     }
   }, [socket]);
