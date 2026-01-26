@@ -34,8 +34,8 @@ export default function PlayerCard({name, avatar, symbol, isActive, timeLeft}: P
           className={`${styles.avatar} ${
             symbol === 'X' ? styles.avatarX : styles.avatarO
           }`}
-          src={avatar}
-          alt={name}
+        src={avatar || '/default-avatar.jpg'}
+        alt={name}
         />
 
         <div className={styles.info}>

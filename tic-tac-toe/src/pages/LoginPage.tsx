@@ -32,11 +32,21 @@ export default function LoginPage() {
       }
 
       localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      const meRes = await fetch('/api/users/me', {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      });
+
+      const freshUser = await meRes.json();
+
+      localStorage.setItem('user', JSON.stringify(freshUser));
+
       navigate('/main-menu');
+
     } catch (err) {
       setError('An error occurred. Please try again.');
-      console.error(err);
+        console.error(err);
     } finally {
       setLoading(false);
     }

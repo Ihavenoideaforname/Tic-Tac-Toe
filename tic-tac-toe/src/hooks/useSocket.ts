@@ -24,6 +24,8 @@ interface UseSocketReturn {
   isWaiting: boolean;
   error: string | null;
   rematchRequested: boolean;
+  playerNames: {O?: string;X?: string;};
+  playerAvatars: {O?: string;X?: string;};
   createRoom: (code: string, mode: GameMode) => void;
   joinRoom: (code: string, mode: GameMode) => void;
   makeMove: (index: number) => void;
@@ -34,6 +36,7 @@ interface UseSocketReturn {
 
 const SOCKET_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
+
 export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
   const [socket, setSocket] = useState<SocketType | null>(null);
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -43,7 +46,14 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
   const [error, setError] = useState<string | null>(null);
   const [rematchRequested, setRematchRequested] = useState(false);
   const [gameActive, setGameActive] = useState(false);
-  
+  const [playerNames, setPlayerNames] = useState<{ O?: string; X?: string }>({});
+  const [playerAvatars, setPlayerAvatars] = useState<{O?: string; X?: string; }>({});
+
+  const storedUser = localStorage.getItem('user');
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+  const username: string = parsedUser?.username ?? 'Guest';
+  const avatar: string = parsedUser?.avatar ?? '/default-avatar.jpg';
+  const userId: string | null = parsedUser?.id ?? null;
   const gameActiveRef = useRef(false);
   const isWaitingRef = useRef(false);
   const socketRef = useRef<SocketType | null>(null);
@@ -88,22 +98,32 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
       setIsWaiting(waiting);
     });
 
-    newSocket.on('game-start', ({ gameState, players }: { gameState: GameState; players: any }) => {
-      setGameState(gameState);
-      setIsWaiting(false);
-      setGameActive(true);
-      
-      console.log('Game started! Players:', players);
-      console.log('My socket ID:', newSocket.id);
-      
-      const myPlayer = players[newSocket.id];
-      if (myPlayer) {
-        console.log('I am playing as:', myPlayer.symbol);
-        setMySymbol(myPlayer.symbol as Player);
-      } else {
-        console.error('Could not find my player data!');
+    newSocket.on('game-start',({ gameState, players }: { gameState: GameState; players: any }) => {
+    setGameState(gameState);
+    setIsWaiting(false);
+    setGameActive(true);
+
+    const names: { O?: string; X?: string } = {};
+    const avatars: { O?: string; X?: string } = {};
+
+    for (const socketId in players) {
+      const player = players[socketId];
+      if (player.symbol === 'O' || player.symbol === 'X') {
+        names[player.symbol as 'O' | 'X'] = player.name;
+        avatars[player.symbol as 'O' | 'X'] = player.avatar || '/default-avatar.jpg';
       }
-    });
+    }
+
+    setPlayerNames(names);
+    setPlayerAvatars(avatars);
+
+    const myPlayer = players[newSocket.id];
+    if (myPlayer) {
+      setMySymbol(myPlayer.symbol);
+    }
+  }
+);
+
 
     newSocket.on('game-update', ({ gameState }: { gameState: GameState }) => {
       setGameState(gameState);
@@ -166,7 +186,7 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
 
   const createRoom = useCallback((code: string, mode: GameMode) => {
     if (socket) {
-      socket.emit('create-room', { code, mode });
+      socket.emit('create-room', { code, mode, username, userId, avatar });
       setIsWaiting(true);
       setError(null);
     }
@@ -174,7 +194,7 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
 
   const joinRoom = useCallback((code: string, mode: GameMode) => {
     if (socket) {
-      socket.emit('join-room', { code, mode });
+      socket.emit('join-room', { code, mode, username, avatar, userId, });
       setError(null);
     }
   }, [socket]);
@@ -212,6 +232,8 @@ export const useSocket = (roomCode: string | undefined): UseSocketReturn => {
     isWaiting,
     error,
     rematchRequested,
+    playerNames,
+    playerAvatars,
     createRoom,
     joinRoom,
     makeMove,

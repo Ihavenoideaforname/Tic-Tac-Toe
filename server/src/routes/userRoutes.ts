@@ -28,7 +28,7 @@ router.post("/api/auth/register", async (req, res) => {
     res.status(201).json({
       message: "User registered successfully",
       token,
-      user: { id: user._id, username: user.username, email: user.email },
+      user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar ?? null, },
     });
   } catch (error) {
     res.status(500).json({ message: "Error registering user", error });
@@ -58,7 +58,7 @@ router.post("/api/auth/login", async (req, res) => {
     res.json({
       message: "Login successful",
       token,
-      user: { id: user._id, username: user.username, email: user.email },
+      user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar, },
     });
   } catch (error) {
     res.status(500).json({ message: "Error logging in", error });
@@ -77,7 +77,15 @@ router.get("/api/users", async (req, res) => {
 router.get('/api/users/me', auth, async (req: AuthRequest, res) => {
   const user = await User.findById(req.user!.userId);
   if (!user) return res.status(404).json({ message: 'User not found' });
-  res.json({ user });
+
+  const apiUrl = process.env.API_URL || 'http://localhost:3001';
+
+  res.json({
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    avatar: user.avatar ? `${apiUrl}${user.avatar}` : null,
+  });
 });
 
 router.put('/api/users/me', auth, upload.single('avatar'), async (req: AuthRequest, res) => {
@@ -95,6 +103,15 @@ router.put('/api/users/me', auth, upload.single('avatar'), async (req: AuthReque
 router.delete('/api/users/me', auth, async (req: AuthRequest, res) => {
   await User.findByIdAndDelete(req.user!.userId);
   res.json({ message: 'Deleted' });
+});
+
+router.get('/api/hall-of-fame', async (_req, res) => {
+  const users = await User.find()
+    .sort({ wins: -1, draws: -1 })
+    .limit(10)
+    .select('username avatar wins losses draws');
+
+  res.json(users);
 });
 
 export default router;

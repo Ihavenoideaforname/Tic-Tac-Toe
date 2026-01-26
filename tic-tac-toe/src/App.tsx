@@ -12,6 +12,7 @@ import ErrorPage from './pages/ErrorPage';
 import MainMenuPage from './pages/MainMenuPage';
 import ProfilePage from './pages/ProfilePage';
 import EditPage from './pages/EditPage';
+import HallOfFamePage from './pages/HallOfFamePage';
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/game/:type/:mode" element={<GamePage />} />
         <Route path="/game/:type/:mode/:roomCode" element={<GamePage />} />
         <Route path="/error" element={<ErrorPage />} />
+        <Route path="/hall-of-fame" element={<HallOfFamePage />} />
         <Route path="*" element={<Navigate to="/error?code=404&message=Page not found" replace />} />
       </Routes>
     </>

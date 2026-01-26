@@ -16,6 +16,7 @@ export const createRoom = (
     winner: null,
     draw: false,
     timeoutWinner: null,
+    winnerLine: null,
   },
   mode,
   rematchRequests: new Set(),

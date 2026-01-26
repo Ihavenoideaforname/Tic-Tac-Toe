@@ -29,17 +29,19 @@ export const setupSocket = (io: Server) => {
   io.on('connection', (socket) => {
     console.log(`Client connected: ${socket.id}`);
 
-    socket.on('create-room', ({ code, mode }) => {
+    socket.on('create-room', ({ code, mode, username, avatar, userId }) => {
       if (rooms.has(code)) {
         socket.emit('room-error', { message: 'Room already exists' });
         return;
       }
 
-      const room = createRoom(code, mode);
+      const room = createRoom(code, mode );
       room.players[socket.id] = {
         playerId: socket.id,
         symbol: 'O',
-        name: 'Player 1',
+        name: username || 'Player 1',
+        avatar: avatar || '/default-avatar.jpg',
+        userId: userId ?? null,
       };
 
       rooms.set(code, room);
@@ -54,7 +56,7 @@ export const setupSocket = (io: Server) => {
       console.log(`Room created: ${code} by ${socket.id}`);
     });
 
-    socket.on('join-room', ({ code }) => {
+    socket.on('join-room', ({ code, username, avatar, userId }) => {
       const room = rooms.get(code);
       
       if (!room) {
@@ -76,7 +78,9 @@ export const setupSocket = (io: Server) => {
       room.players[socket.id] = {
         playerId: socket.id,
         symbol: 'X',
-        name: 'Player 2',
+        name: username || 'Player 2',
+        avatar: avatar || '/default-avatar.jpg',
+        userId: userId ?? null,
       };
 
       socket.join(code);

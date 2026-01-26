@@ -7,6 +7,8 @@ export interface Room {
       playerId: string;
       symbol: Player;
       name: string;
+      userId?: string;
+      avatar?: string;
     };
   };
   gameState: {
@@ -17,6 +19,7 @@ export interface Room {
     winner: Player;
     draw: boolean;
     timeoutWinner: Player;
+    winnerLine: number[] | null;
   };
   mode: 'regular' | 'timed';
   rematchRequests: Set<string>;
